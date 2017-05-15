@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>观察者模式</title>
+    <script type="text/javascript">
+ 
+    </script>
+    <style>
+    </style>
+</head>
+
+<body>
+
+<script>
+    var Demo=function(){
+        var _message={};
+        var that=this;
+        //发布信息
+        that.fire=function(type,args){
+            if(!_message[type]){
+                return;
+            }
+            vari=0,
+            len=_message[type].length;
+            for(;i<len;i++){
+                _message[type][i].call(this,args);//调用一个对象的一个方法，以另一个对象替换当前对象。 这里call的第一个参数不重要，第二个参数是regist函数的参数
+            }
+        }
+        //注册信息
+        that.regist=function(type,fn){
+            if(typeof _message[type]==="undefined"){
+                _message[type]=[fn]
+            }else{
+                _message[type].push(fn);
+            }
+        }
+        //移除信息
+        that.remove=function(type,fn){
+            if(_message[type] instanceof Array){
+                var i=_message[type].length-1;
+                for(;i>=0;i--){
+                    _message[type][i]===fn && _message[type].splice(i,1)
+                }
+            }
+        }
+    }
+    var Observer=new Demo();
+    Observer.regist("test",function(e){//这里将回调函数用作第二个参数
+        e()
+    })
+    Observer.regist("test",function(e){//这里将回调函数用作第二个参数
+        console.log("这个订阅也触发了")
+    })
+    Observer.fire("test",function(){
+        alert("这里是业务逻辑")
+    })
+</script>
+</body>
+
+</html>
