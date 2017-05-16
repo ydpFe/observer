@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>观察者模式</title>
+    <title>状态模式</title>
     <script type="text/javascript">
  
     </script>
@@ -14,49 +14,49 @@
 <body>
 
 <script>
-    var observer=(function(){
-        var _message={};
-        return {
-            //注册信息
-            regist:function(type,fn){
-                if(typeof _message[type]==="undefined"){
-                    _message[type]=[fn]
-                }else{
-                    _message[type].push(fn);
-                }
-            },
-            //发布信息
-            fire:function(type,args){
-                if(!_message[type]){
-                    return;
-                }
-                var events={
-                    type:type,
-                    args:args || {}
+    var MarryState=function(){
+        var _message={},
+            states={
+                jump:function(){
+                    console.log("jump");
                 },
-                i=0,
-                len=_message[type].length;
-                for(;i<len;i++){
-                    _message[type][i].call(this,events);
+                move:function(){
+                    console.log("move");
+                },
+                shoot:function(){
+                    console.log("shoot");
                 }
-            },
-            //移除信息
-            remove:function(type,fn){
-                if(_message[type] instanceof Array){
-                    var i=_message[type].length-1;
-                    for(;i>=0;i--){
-                        console.log("jinlaile")
-                        _message[type][i]===fn && _message[type].splice(i,1)
+            };
+        var Action={
+            changeState:function(){
+                var arg=arguments;
+                _message={};//清空
+                if(arg.length!=0){
+                    for(var i in arg){
+                        _message[arg[i]]=true;
                     }
                 }
+                return this;
+            },
+            goes:function(){
+                console.log("触发一次动作");
+                for(var i in _message){
+                    states[i] && states[i]();
+                }
+                return this;
             }
         }
-    }())
-    observer.regist("test",function(e){
-        console.log(e.type,e.args.msg)
-    })
-    // observer.remove("test",{msg:"我是参数msg"})
-    observer.fire("test",{msg:"我是参数msg"})
+        return{
+            change:Action.changeState,
+            goes:Action.goes
+        }
+    }
+    var marry=new MarryState();
+    marry
+        .change("jump")
+        .goes()
+        .change("shoot")
+        .goes()
 </script>
 </body>
 
