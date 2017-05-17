@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MVVM之Object.defineProperty</title>
+    <script type="text/javascript">
+ 
+    </script>
+    <style>
+    </style>
+</head>
+
+<body>
+<script>
+    var a={};
+    Object.defineProperty(a,"write",{
+        value:123
+    })
+    // console.log(a.write)
+    Object.defineProperty(a,"test",{
+        set:function(val){
+            console.log(val)
+        },
+        get:function(){
+            return "get内容";
+        }
+    })
+    a.test="我是set";
+    console.log(a.test)
+</script>
+</body>
+
+</html>

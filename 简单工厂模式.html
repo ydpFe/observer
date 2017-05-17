@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>简单工厂模式</title>
+    <script type="text/javascript">
+ 
+    </script>
+    <style>
+    </style>
+</head>
+
+<body>
+<script>
+    console.log("简单工厂模式又叫静态工厂模式，由一个工厂对象决定创建某一种产品对象的实例。主要用来创建同一类对象")
+    var PopFactory=function(name,msg){
+        switch(name){
+            case "alert":
+            return new alertObj(msg);
+            case "console":
+            return new consoleObj(msg);
+        }
+    }
+    var alertObj=function(msg){
+        alert(msg)
+    }
+    var consoleObj=function(msg){
+        console.log(msg)
+    }
+    PopFactory("console","我是内容哦")
+</script>
+</body>
+
+</html>
