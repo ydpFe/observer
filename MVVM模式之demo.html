@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MVVM实现滚动条和进度条</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="firsr" data-bind="type:'slider',data:demo1"></div>
+    <div class="second" data-bind="type:'slider',data:demo2">test</div>
+    <div class="third" data-bind="type:'progressbar',data:demo3"></div>
+<script>
+    //屏蔽压缩报错
+    ~(function(){
+        var window=this || (0,eval)("this");
+        var FONTSIZE=function(){
+            return parseInt(document.body.currentStyle ? document.body.currentStyle["fontSize"]: getComputedStyle(document.body,false)["fontSize"]);
+        }();
+        var VM=function(){
+            var Method={
+                /*
+                 *进度条组建创建方法
+                 *dom   进度条容器
+                 *data  进度条数据模型
+                 */
+                progressbar:function(dom,data){
+                    //进度条进度完成容器
+                    var progress=document.createElement("div"),
+                    param=data.data;
+                    //设置进度完成容器尺寸
+                    progress.style.width=(param.position || 100)+"100%";
+                    dom.className+="ui-progressbar";
+                    dom.appendChild(progress);
+                },
+                /*
+                 *滑动条组建创建方法
+                 *dom   滑动条容器
+                 *data  滑动条数据模型
+                 */
+                slider:function(dom,data){
+                    //滑动条拨片
+                    var bar=document.createElement("span"),
+                        //滑动条进度容器
+                        progress=document.createElement("div"),
+                        //滑动条容量提示信息
+                        totleText=null,
+                        //滑动条 拨片 提示信息
+                        progressText=null,
+                        //数据模型类型，结构:{position:60,totle:200}
+                        param=data.data,
+                        //容器元素宽度
+                        width=dom.clientWidth,
+                        //容器元素横坐标值
+                        left=dom.offsetLeft,
+                        //拨片位置（以模型数据中position数据计算）
+                        realWidth=(param.position || 100)* width/100;
+                    //清空滑动条容器，为创建滑动条做准备
+                    dom.innerHTML="";
+                    //如果模型数据中提供容器总量信息（param.totle）,则创建滚动条提示文案
+                    if(param.totle){
+                        //容器总量提示文案
+                        text=document.createElement("b");
+                        //拨片位置提示文案
+                        progressText=document.createElement("em");
+                        //设置容器总量提示文案
+                        text.innerHTML=param.totle;
+                        //将容器总量提示文案元素缇娜家到滑动条组件中
+                        dom.appendChild(text);
+                        //将拨片位置提示文案元素添加到滑动条组件中
+                        dom.appendChild(progressText);
+                    }
+                    //设置滑动条
+                    setStyle(realWidth);
+                    //为滑动条组件添加ui样式
+                    dom.className+="ui-slider";
+                    //将进度容器添加到滑动条组件中
+                    dom.appendChild(progress);
+                    //将拨片添加到滑动条组件中
+                    dom.appendChild(bar);
+                    function setStyle(w){
+                        progress.style.width=w+"px";
+                        bar.style.left=w-FONTSIZE/2+"px";
+                        //如果有拨片提示文案
+                        if(progressText){
+                            progressText.style.left=w-FONTSIZE/2 *2.4+"px";
+                            progressText.innerHTML=parseFloat(w/width*100).toFixed(2)+"%";
+                        }
+                    }
+                    bar.onmousedown=function(){
+                        document.onmousedown=function(event){
+                            //获取事件源
+                            var e=event || window.event;
+                            var w=e.clientX-left
+                            setStyle(w<width?(w>0?w:0):width);
+                        }
+                        //阻止页面滑动选取事件
+                        document.onselectstart=function(){
+                            return false;
+                        }
+                        //停止滑动交互
+                        document.onmouseup=function(){
+                            document.onmousemove=null;
+                            document.onselectstart=null;
+                        }
+                    }
+                }//end
+            }
+            /*
+             *获取视图层组件渲染数据的映射数据
+             *dom   组件元素
+             */
+             function getBindData(dom){
+                var data=dom.getAttribute("data-bind");
+                return !!data && (new Function("return ({"+data+"})"))();
+             }
+             /*
+              *组件实例方法
+              */
+            return function(){
+                var doms=document.body.getElementsByTagName("*");
+                    ctx=null;
+                for(var i=0;i<doms.length;i++){
+                    ctx=getBindData(doms[i]);
+                    ctx.type && Method[ctx.type] && Method[ctx.type](doms[i],ctx);
+                }
+            }
+        }();
+        window.VM=VM;
+    })()
+    var demo1={
+        position:60,
+        totle:200
+    },
+        demo2={
+            position:20
+        },
+        demo3={
+            position:50
+        }
+    window.onload=function(){
+        VM();
+    }
+</script>
+</body>
+
+</html>
