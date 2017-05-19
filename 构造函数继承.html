@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>构造函数继承</title>
+    <style>
+    </style>
+</head>
+
+<body>
+<script>
+    var superClass=function(id){
+        this.book=["js","java"]
+        this.id=id;
+    }
+    superClass.prototype.show=function(){
+        console.log(this.book);
+    }
+    var childClass=function(id,name){
+        superClass.call(this,id)
+        this.name=name;
+    }
+    var test=new childClass(1,"tom");
+    var test2=new childClass(2,"jack");
+
+    //核心是call更改函数的作用域,将子类的变量在父类中执行一遍，因为父类中this的指向是设置属性的，所以子类就继承了父类的属性
+    test.book.push("c++")
+    console.log(test.book);
+    console.log(test2.book);
+    console.log(test.id+"  "+test.name);
+    console.log(test2.id+" "+test2.name);
+    
+</script>
+</body>
+
+</html>
