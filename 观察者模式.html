@@ -22,7 +22,7 @@
             if(!_message[type]){
                 return;
             }
-            vari=0,
+            var i=0,
             len=_message[type].length;
             for(;i<len;i++){
                 _message[type][i].call(this,args);//调用一个对象的一个方法，以另一个对象替换当前对象。 这里call的第一个参数是给fire添加函数并且立即执行，第二个参数是regist函数的参数
@@ -47,15 +47,17 @@
         }
     }
     var Observer=new Demo();
-    Observer.regist("test",function(e){//这里将回调函数用作第二个参数
-        e()
-    })
+    function add(data){
+        console.log(data)
+    }
+    Observer.regist("test",add)
     Observer.regist("test",function(e){//这里将回调函数用作第二个参数
         console.log("这个订阅也触发了")
     })
-    Observer.fire("test",function(){
-        alert("这里是业务逻辑")
-    })
+    var obj={
+        "msg":"我是接收的参数"
+    }
+    Observer.fire("test",obj)
 </script>
 </body>
 
