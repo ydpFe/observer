@@ -10,10 +10,25 @@
 
 <body>
 <script>
-    var A={};
-    A.formateString=function(str,data){
-        return str.replace(/\{#(\w+)#\}/g,function(match,key){return typeof data[key]===undefined?"":data[key]});
+    var methods=function(){
+        this.add=function(){
+            console.log("woshi add");
+            return this;
+        }
+        this.del=function(){
+            console.log('我是del');
+            return this;
+        }
     }
+    methods.prototype={
+        say:function(){
+            console.log("now i'm talking")
+        }
+    }
+    var a=new methods();
+    a.add().del().say();
+    console.log(methods.prototype);
+
 </script>
 </body>
 

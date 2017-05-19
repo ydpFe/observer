@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>简单模版模式</title>
+    <style>
+    </style>
+</head>
+
+<body>
+<script>
+    //创建父亲
+    function superClass(){
+        this.superVal="我是父亲";
+    }
+    //添加公共方法
+    superClass.prototype.getSuperVal=function(){
+        return this.superVal;
+    }
+    //创建孩子
+    function childClass(){
+        this.childVal="我是孩子";
+    }
+    childClass.prototype=new superClass();
+    childClass.prototype.getChildVal=function(){
+        return this.childVal;
+    }
+    //使用
+    var test=new childClass();
+    console.log(test.getSuperVal())
+    console.log(test.getChildVal())
+    //typeof 用来检测某个对象是否是某个类的实例 因为childClass.prototype
+    console.log(test instanceof superClass); 
+    console.log(test instanceof childClass); 
+    console.log(childClass instanceof superClass); 
+    console.log(childClass.prototype instanceof superClass); 
+</script>
+</body>
+
+</html>
