@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>简单模版模式</title>
+    <title>类式继承</title>
     <style>
     </style>
 </head>
@@ -13,6 +13,7 @@
     //创建父亲
     function superClass(){
         this.superVal="我是父亲";
+        this.msg=[1,2]
     }
     //添加公共方法
     superClass.prototype.getSuperVal=function(){
@@ -35,6 +36,11 @@
     console.log(test instanceof childClass); 
     console.log(childClass instanceof superClass); 
     console.log(childClass.prototype instanceof superClass); 
+
+    //会有两个问题：1:子类的实例更改子类从父类继承的技术会影响到其他子类。
+    var test2=new childClass();
+    test2.msg.push(3);
+    console.log(test.msg)
 </script>
 </body>
 
