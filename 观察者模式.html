@@ -25,7 +25,7 @@
             vari=0,
             len=_message[type].length;
             for(;i<len;i++){
-                _message[type][i].call(this,args);//调用一个对象的一个方法，以另一个对象替换当前对象。 这里call的第一个参数不重要，第二个参数是regist函数的参数
+                _message[type][i].call(this,args);//调用一个对象的一个方法，以另一个对象替换当前对象。 这里call的第一个参数是给fire添加函数并且立即执行，第二个参数是regist函数的参数
             }
         }
         //注册信息
